@@ -1,0 +1,1127 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.4.5
+-- Dumped by pg_dump version 9.4.0
+-- Started on 2016-03-01 11:26:14 EST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'SQL_ASCII';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 178 (class 3079 OID 12123)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2293 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 173 (class 1259 OID 42841)
+-- Name: bandwidth; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE bandwidth (
+    id integer NOT NULL,
+    region character(60),
+    post character(60),
+    seats integer,
+    avgpkwkld integer,
+    growth numeric,
+    circuittype text,
+    capacity integer,
+    subscriptions numeric,
+    pending_nextgen character varying(30)
+);
+
+
+ALTER TABLE bandwidth OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 42866)
+-- Name: bandwidth_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE bandwidth_id_seq
+    START WITH 3
+    INCREMENT BY 1
+    MINVALUE 3
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE bandwidth_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2294 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: bandwidth_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE bandwidth_id_seq OWNED BY bandwidth.id;
+
+
+--
+-- TOC entry 174 (class 1259 OID 42849)
+-- Name: brodeploylocal; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE brodeploylocal (
+    id integer NOT NULL,
+    bureau character(60),
+    regularworkstation integer,
+    regworkdeployed integer,
+    regworkremaining integer,
+    regworkpercentcompleted numeric,
+    vsencompatableworkstation integer,
+    vsendeployed integer,
+    vsenremaining integer,
+    vsenpercentcompleted numeric
+);
+
+
+ALTER TABLE brodeploylocal OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 42860)
+-- Name: brodeploylocal_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE brodeploylocal_id_seq
+    START WITH 3
+    INCREMENT BY 1
+    MINVALUE 3
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE brodeploylocal_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2295 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: brodeploylocal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE brodeploylocal_id_seq OWNED BY brodeploylocal.id;
+
+
+--
+-- TOC entry 172 (class 1259 OID 42833)
+-- Name: brodeployoverseas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE brodeployoverseas (
+    id integer NOT NULL,
+    region character(60),
+    post character(60),
+    regularworkstation integer,
+    regworkdeployed integer,
+    regworkremaining integer,
+    regworkpercentcompleted numeric,
+    vsencompatableworkstation integer,
+    vsendeployed integer,
+    vsenremaining integer,
+    vsenpercentcompleted numeric,
+    latitude numeric,
+    longitude numeric
+);
+
+
+ALTER TABLE brodeployoverseas OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 42863)
+-- Name: brodeployoverseas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE brodeployoverseas_id_seq
+    START WITH 3
+    INCREMENT BY 1
+    MINVALUE 3
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE brodeployoverseas_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2296 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: brodeployoverseas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE brodeployoverseas_id_seq OWNED BY brodeployoverseas.id;
+
+
+--
+-- TOC entry 2163 (class 2604 OID 42868)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY bandwidth ALTER COLUMN id SET DEFAULT nextval('bandwidth_id_seq'::regclass);
+
+
+--
+-- TOC entry 2164 (class 2604 OID 42862)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY brodeploylocal ALTER COLUMN id SET DEFAULT nextval('brodeploylocal_id_seq'::regclass);
+
+
+--
+-- TOC entry 2162 (class 2604 OID 42865)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY brodeployoverseas ALTER COLUMN id SET DEFAULT nextval('brodeployoverseas_id_seq'::regclass);
+
+
+--
+-- TOC entry 2281 (class 0 OID 42841)
+-- Dependencies: 173
+-- Data for Name: bandwidth; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY bandwidth (id, region, post, seats, avgpkwkld, growth, circuittype, capacity, subscriptions, pending_nextgen) FROM stdin;
+3	WHA                                                         	Mexico City                                                 	26	833846	398	DTS-PO	699710	6	\N
+4	EAP                                                         	Tel Aviv                                                    	16	725801	4452	ISP	584451	19	\N
+5	EAP                                                         	Rome                                                        	16	498237	266	ISP	332082	14	\N
+6	AF                                                          	London                                                      	84	135675	3387	DTS-PO	755316	52	\N
+7	SCA                                                         	Tel Aviv                                                    	83	144616	1072	DTS-PO	278461	14	\N
+8	SCA                                                         	Abu Dabi                                                    	11	279994	4220	ISP	951221	64	\N
+9	SCA                                                         	Rome                                                        	16	769474	309	ISP	983314	95	\N
+10	SCA                                                         	Abu Dabi                                                    	27	904205	748	ISP	184199	100	\N
+11	NEA                                                         	Rome                                                        	14	152658	3082	ISP	222966	39	\N
+12	WHA                                                         	Mexico City                                                 	35	516637	1177	ISP	666562	44	\N
+13	WHA                                                         	Mexico City                                                 	46	820544	515	ISP	963203	73	\N
+14	NEA                                                         	London                                                      	20	604059	2364	ISP	859727	10	\N
+15	WHA                                                         	Rome                                                        	48	934232	172	DTS-PO	441990	56	\N
+16	EAP                                                         	Petoria                                                     	47	177347	778	DTS-PO	73868	90	\N
+17	NEA                                                         	Tel Aviv                                                    	83	860372	961	DTS-PO	633866	11	\N
+18	AF                                                          	Prague                                                      	15	781978	3405	ISP	845847	58	\N
+19	NEA                                                         	London                                                      	66	846414	2068	DTS-PO	228460	41	\N
+20	EAP                                                         	Prague                                                      	40	498857	307	ISP	819038	82	\N
+21	WHA                                                         	Mexico City                                                 	32	805030	574	ISP	426653	97	\N
+22	AF                                                          	Rome                                                        	13	948045	4045	DTS-PO	190526	30	\N
+23	WHA                                                         	London                                                      	62	676652	4423	DTS-PO	312604	66	\N
+24	AF                                                          	Tel Aviv                                                    	18	797384	505	DTS-PO	871009	9	\N
+25	WHA                                                         	London                                                      	80	43527	3647	DTS-PO	678958	97	\N
+26	SCA                                                         	London                                                      	87	875388	3902	ISP	153882	55	\N
+27	AF                                                          	Prague                                                      	91	322543	3340	DTS-PO	705434	69	\N
+28	AF                                                          	Petoria                                                     	22	415448	1409	DTS-PO	689798	32	\N
+29	AF                                                          	Rome                                                        	38	866693	4128	ISP	541098	79	\N
+30	NEA                                                         	Tel Aviv                                                    	91	458160	398	DTS-PO	384294	54	\N
+31	AF                                                          	Tel Aviv                                                    	63	232724	1864	ISP	23913	32	\N
+32	EAP                                                         	Rome                                                        	98	956849	3602	DTS-PO	266974	45	\N
+33	WHA                                                         	Prague                                                      	53	183773	1582	DTS-PO	338588	17	\N
+34	SCA                                                         	Mexico City                                                 	43	500556	622	ISP	241778	47	\N
+35	WHA                                                         	London                                                      	97	877069	3824	ISP	472988	86	\N
+36	SCA                                                         	Petoria                                                     	73	227896	4384	ISP	718453	1	\N
+37	EAP                                                         	Prague                                                      	55	700156	547	ISP	467799	31	\N
+38	WHA                                                         	Mexico City                                                 	26	836327	2419	DTS-PO	195149	11	\N
+39	WHA                                                         	Tel Aviv                                                    	45	98009	706	DTS-PO	452084	61	\N
+40	SCA                                                         	Prague                                                      	41	859373	4928	DTS-PO	95561	31	\N
+41	AF                                                          	Abu Dabi                                                    	69	993531	739	DTS-PO	703969	24	\N
+42	WHA                                                         	Tel Aviv                                                    	25	672954	1045	ISP	758515	52	\N
+43	SCA                                                         	Petoria                                                     	38	573809	1189	DTS-PO	814073	21	\N
+44	WHA                                                         	London                                                      	52	693142	1196	ISP	901627	46	\N
+45	AF                                                          	Mexico City                                                 	34	66552	4069	DTS-PO	389805	6	\N
+46	WHA                                                         	Mexico City                                                 	72	391818	3886	DTS-PO	681520	39	\N
+47	NEA                                                         	Tel Aviv                                                    	60	148947	1824	ISP	952537	74	\N
+48	NEA                                                         	Paris                                                       	88	777218	3947	ISP	691577	88	\N
+49	EAP                                                         	London                                                      	69	102849	3004	ISP	482831	3	\N
+50	SCA                                                         	Tel Aviv                                                    	89	308297	4843	DTS-PO	972002	26	\N
+51	EAP                                                         	Paris                                                       	93	327860	3611	DTS-PO	798955	45	\N
+52	WHA                                                         	Tel Aviv                                                    	38	923650	1053	ISP	801323	52	\N
+53	WHA                                                         	Abu Dabi                                                    	73	605468	2130	ISP	398098	92	\N
+54	AF                                                          	Paris                                                       	85	460804	2402	ISP	735611	80	\N
+55	EAP                                                         	Paris                                                       	97	464119	2078	ISP	33622	69	\N
+56	EAP                                                         	Prague                                                      	25	708710	664	ISP	548014	64	\N
+57	EAP                                                         	Abu Dabi                                                    	99	652730	2695	ISP	388340	34	\N
+58	WHA                                                         	Petoria                                                     	56	837551	2817	DTS-PO	701928	7	\N
+59	EAP                                                         	Paris                                                       	32	531486	676	ISP	184215	68	\N
+60	SCA                                                         	Tel Aviv                                                    	94	486583	4435	DTS-PO	240732	21	\N
+61	WHA                                                         	Prague                                                      	74	362329	817	DTS-PO	843562	41	\N
+62	EAP                                                         	Petoria                                                     	21	537695	478	ISP	768427	31	\N
+63	SCA                                                         	Paris                                                       	22	820617	4443	ISP	535117	25	\N
+64	WHA                                                         	Abu Dabi                                                    	22	843599	1674	DTS-PO	982266	1	\N
+65	SCA                                                         	Rome                                                        	92	734405	4459	DTS-PO	428208	4	\N
+66	WHA                                                         	Petoria                                                     	77	543538	3143	ISP	648403	38	\N
+67	NEA                                                         	London                                                      	44	653974	853	ISP	388379	7	\N
+68	EAP                                                         	Abu Dabi                                                    	55	390814	4634	DTS-PO	611708	32	\N
+69	EAP                                                         	Paris                                                       	66	151120	4038	ISP	774055	6	\N
+70	NEA                                                         	Rome                                                        	90	491362	1625	ISP	973318	44	\N
+71	AF                                                          	Mexico City                                                 	96	233287	1227	DTS-PO	28540	83	\N
+72	EAP                                                         	Abu Dabi                                                    	48	390851	2711	DTS-PO	436674	33	\N
+73	SCA                                                         	Tel Aviv                                                    	77	718890	3939	DTS-PO	23558	10	\N
+74	SCA                                                         	Rome                                                        	24	543900	3460	DTS-PO	658677	19	\N
+75	EAP                                                         	London                                                      	51	824406	4122	ISP	12150	57	\N
+76	AF                                                          	Paris                                                       	28	620224	1798	DTS-PO	42059	40	\N
+77	NEA                                                         	Paris                                                       	81	145705	-5	ISP	329229	17	\N
+78	WHA                                                         	London                                                      	100	885340	264	DTS-PO	727600	59	\N
+79	WHA                                                         	Rome                                                        	55	55095	451	DTS-PO	533046	96	\N
+80	NEA                                                         	Prague                                                      	30	845172	4874	DTS-PO	564718	33	\N
+81	AF                                                          	London                                                      	83	859250	4816	ISP	364577	1	\N
+82	SCA                                                         	Rome                                                        	53	666979	1624	ISP	641999	85	\N
+83	NEA                                                         	Petoria                                                     	37	922799	4022	DTS-PO	27405	67	\N
+84	WHA                                                         	Petoria                                                     	12	798321	4961	ISP	964017	28	\N
+85	SCA                                                         	Rome                                                        	71	663124	4265	DTS-PO	475266	93	\N
+86	AF                                                          	London                                                      	56	663514	300	ISP	655800	29	\N
+87	SCA                                                         	Paris                                                       	35	971703	4609	DTS-PO	568359	100	\N
+88	NEA                                                         	Paris                                                       	68	324477	4961	DTS-PO	642339	15	\N
+89	WHA                                                         	Mexico City                                                 	32	894577	393	ISP	978274	36	\N
+90	SCA                                                         	London                                                      	52	161418	2403	DTS-PO	556356	33	\N
+91	WHA                                                         	Paris                                                       	15	857979	3578	ISP	596560	69	\N
+92	WHA                                                         	Mexico City                                                 	70	113209	1049	DTS-PO	370692	24	\N
+93	AF                                                          	Abu Dabi                                                    	56	558733	765	ISP	277709	53	\N
+94	AF                                                          	London                                                      	34	203869	1437	ISP	866993	40	\N
+95	AF                                                          	Rome                                                        	13	466181	4269	ISP	827652	13	\N
+96	SCA                                                         	Tel Aviv                                                    	96	950812	111	ISP	489833	64	\N
+97	AF                                                          	London                                                      	39	598041	296	DTS-PO	526755	49	\N
+98	AF                                                          	Paris                                                       	54	651092	3978	ISP	808114	75	\N
+99	EAP                                                         	Paris                                                       	60	474151	2003	DTS-PO	926804	59	\N
+100	EAP                                                         	Abu Dabi                                                    	90	812294	3215	ISP	645015	100	\N
+101	NEA                                                         	London                                                      	69	332526	3054	ISP	130556	73	\N
+102	EAP                                                         	Rome                                                        	35	360442	1459	DTS-PO	550657	4	\N
+103	WHA                                                         	Tel Aviv                                                    	46	16865	4529	DTS-PO	636933	80	\N
+104	AF                                                          	Abu Dabi                                                    	54	629016	4552	DTS-PO	946531	45	\N
+105	WHA                                                         	Abu Dabi                                                    	97	94783	2650	DTS-PO	234854	10	\N
+106	NEA                                                         	London                                                      	14	761979	290	DTS-PO	398034	88	\N
+107	NEA                                                         	Petoria                                                     	25	803021	690	ISP	763775	23	\N
+108	SCA                                                         	London                                                      	85	843317	408	DTS-PO	844647	99	\N
+109	AF                                                          	Prague                                                      	22	369547	3125	ISP	535143	43	\N
+110	SCA                                                         	Mexico City                                                 	75	744065	4562	DTS-PO	807756	65	\N
+111	WHA                                                         	London                                                      	55	408647	2426	DTS-PO	594223	6	\N
+112	NEA                                                         	Mexico City                                                 	74	832345	113	ISP	749971	10	\N
+113	EAP                                                         	Paris                                                       	89	158909	4066	DTS-PO	342574	91	\N
+114	WHA                                                         	Petoria                                                     	46	389164	435	ISP	221509	12	\N
+115	SCA                                                         	Tel Aviv                                                    	96	398425	1824	DTS-PO	816258	26	\N
+116	AF                                                          	Paris                                                       	11	874187	2660	ISP	962115	65	\N
+117	NEA                                                         	London                                                      	62	291218	3330	ISP	505670	10	\N
+118	SCA                                                         	London                                                      	91	902626	1053	DTS-PO	621922	47	\N
+119	NEA                                                         	Rome                                                        	58	519479	3776	DTS-PO	334036	90	\N
+120	WHA                                                         	Rome                                                        	58	508833	4079	DTS-PO	38361	73	\N
+121	AF                                                          	Paris                                                       	78	379066	3233	ISP	703102	54	\N
+122	NEA                                                         	Paris                                                       	11	851421	2569	ISP	671956	86	\N
+123	NEA                                                         	Paris                                                       	27	610373	236	DTS-PO	422632	39	\N
+124	EAP                                                         	Paris                                                       	19	416584	1874	DTS-PO	85359	29	\N
+125	NEA                                                         	Abu Dabi                                                    	15	73167	751	DTS-PO	362641	93	\N
+126	SCA                                                         	Abu Dabi                                                    	49	844137	2086	ISP	504005	43	\N
+127	WHA                                                         	Mexico City                                                 	100	838242	3642	ISP	899666	80	\N
+128	AF                                                          	Paris                                                       	71	887160	2271	DTS-PO	304952	13	\N
+129	WHA                                                         	Prague                                                      	44	594984	1096	ISP	326520	37	\N
+130	EAP                                                         	London                                                      	70	744142	4130	ISP	307372	83	\N
+131	AF                                                          	London                                                      	18	818357	4248	DTS-PO	269131	61	\N
+132	NEA                                                         	London                                                      	95	397271	3015	ISP	608702	93	\N
+133	SCA                                                         	Petoria                                                     	45	649318	2119	ISP	746583	25	\N
+134	AF                                                          	Rome                                                        	59	783283	4695	ISP	818752	13	\N
+135	WHA                                                         	Prague                                                      	68	193496	4298	DTS-PO	504084	50	\N
+136	AF                                                          	London                                                      	55	853011	2454	ISP	636293	44	\N
+137	WHA                                                         	Rome                                                        	79	385776	2180	DTS-PO	899938	13	\N
+138	AF                                                          	Prague                                                      	100	349083	2867	ISP	794128	13	\N
+139	SCA                                                         	Petoria                                                     	41	236170	-2	ISP	987908	91	\N
+140	WHA                                                         	Tel Aviv                                                    	94	592409	193	ISP	921793	97	\N
+141	WHA                                                         	Paris                                                       	14	322729	708	ISP	548900	15	\N
+142	SCA                                                         	Paris                                                       	46	415367	1550	DTS-PO	673556	99	\N
+143	AF                                                          	Abu Dabi                                                    	33	941794	1824	DTS-PO	424969	94	\N
+144	EAP                                                         	Prague                                                      	38	910706	506	DTS-PO	420321	41	\N
+145	NEA                                                         	Rome                                                        	43	396996	3585	ISP	759507	34	\N
+146	NEA                                                         	Petoria                                                     	64	850152	3582	DTS-PO	133280	56	\N
+147	WHA                                                         	Petoria                                                     	58	983733	2670	DTS-PO	953567	72	\N
+148	AF                                                          	London                                                      	62	369110	4662	DTS-PO	495328	20	\N
+149	EAP                                                         	Petoria                                                     	16	980531	4675	ISP	520085	65	\N
+150	WHA                                                         	London                                                      	79	21550	3776	DTS-PO	127232	71	\N
+151	SCA                                                         	Prague                                                      	33	470546	2516	DTS-PO	574515	98	\N
+152	WHA                                                         	Mexico City                                                 	15	578551	1036	DTS-PO	801592	94	\N
+153	EAP                                                         	Prague                                                      	73	707664	1209	DTS-PO	750250	95	\N
+154	EAP                                                         	Tel Aviv                                                    	87	370027	410	ISP	435040	66	\N
+155	SCA                                                         	London                                                      	27	76376	1451	DTS-PO	155881	89	\N
+156	EAP                                                         	Paris                                                       	99	31756	4404	DTS-PO	206946	86	\N
+157	NEA                                                         	Prague                                                      	13	62509	4508	ISP	310685	92	\N
+158	AF                                                          	Abu Dabi                                                    	39	654361	1258	ISP	676117	14	\N
+159	SCA                                                         	London                                                      	65	474978	1774	DTS-PO	980061	2	\N
+160	NEA                                                         	Prague                                                      	85	805199	4061	ISP	113693	62	\N
+161	EAP                                                         	Petoria                                                     	91	94838	1356	ISP	447429	5	\N
+162	SCA                                                         	Mexico City                                                 	82	800961	1463	DTS-PO	115609	69	\N
+163	WHA                                                         	Petoria                                                     	97	851693	678	ISP	894360	97	\N
+164	SCA                                                         	Mexico City                                                 	75	729288	3460	ISP	834898	38	\N
+165	EAP                                                         	Tel Aviv                                                    	50	408086	4667	ISP	176988	90	\N
+166	SCA                                                         	Abu Dabi                                                    	75	577742	2004	DTS-PO	477951	37	\N
+167	NEA                                                         	Prague                                                      	80	892976	3240	ISP	950180	10	\N
+168	SCA                                                         	Mexico City                                                 	16	765289	2332	ISP	486551	5	\N
+169	NEA                                                         	London                                                      	16	492478	3895	ISP	184263	35	\N
+170	AF                                                          	London                                                      	89	740325	1023	DTS-PO	333225	49	\N
+171	WHA                                                         	London                                                      	22	675153	2824	ISP	279194	69	\N
+172	SCA                                                         	London                                                      	63	358719	1767	ISP	255889	82	\N
+173	NEA                                                         	Mexico City                                                 	45	400891	2296	DTS-PO	783839	55	\N
+174	AF                                                          	Abu Dabi                                                    	19	559967	1476	ISP	146844	65	\N
+175	WHA                                                         	Petoria                                                     	83	485415	4479	DTS-PO	171400	46	\N
+176	NEA                                                         	Mexico City                                                 	73	869732	1512	DTS-PO	953263	29	\N
+177	AF                                                          	Mexico City                                                 	78	598423	4671	ISP	495391	53	\N
+178	AF                                                          	Abu Dabi                                                    	89	276196	4683	ISP	89798	95	\N
+179	EAP                                                         	Petoria                                                     	33	836538	1355	DTS-PO	509295	34	\N
+180	WHA                                                         	Abu Dabi                                                    	38	817665	28	DTS-PO	191679	67	\N
+181	SCA                                                         	Prague                                                      	70	52951	1532	ISP	322739	16	\N
+182	AF                                                          	Rome                                                        	98	232675	4016	ISP	889859	50	\N
+183	AF                                                          	Prague                                                      	12	531281	1372	ISP	353315	78	\N
+184	SCA                                                         	Petoria                                                     	41	769621	60	DTS-PO	928696	50	\N
+185	AF                                                          	Prague                                                      	67	746409	4861	ISP	678379	24	\N
+186	EAP                                                         	Petoria                                                     	26	973742	2328	ISP	902437	96	\N
+187	WHA                                                         	London                                                      	54	145294	1830	DTS-PO	14016	64	\N
+188	SCA                                                         	Tel Aviv                                                    	58	859161	155	ISP	45786	1	\N
+189	AF                                                          	Abu Dabi                                                    	66	692868	1015	DTS-PO	546621	100	\N
+190	AF                                                          	Tel Aviv                                                    	49	860565	1738	ISP	867087	98	\N
+191	AF                                                          	Abu Dabi                                                    	50	58975	4973	ISP	595596	100	\N
+192	AF                                                          	Mexico City                                                 	38	690694	3085	ISP	46209	9	\N
+193	EAP                                                         	London                                                      	10	816799	2789	DTS-PO	317190	64	\N
+194	EAP                                                         	Tel Aviv                                                    	100	719051	3270	DTS-PO	267012	23	\N
+195	EAP                                                         	Mexico City                                                 	74	771565	737	DTS-PO	167709	58	\N
+196	AF                                                          	Mexico City                                                 	25	537848	1650	ISP	256898	99	\N
+197	SCA                                                         	London                                                      	86	690812	3272	DTS-PO	375558	35	\N
+198	NEA                                                         	London                                                      	15	698133	2293	ISP	464206	11	\N
+199	AF                                                          	Petoria                                                     	22	841185	1347	DTS-PO	851197	57	\N
+200	NEA                                                         	Petoria                                                     	90	112209	2801	ISP	944921	14	\N
+201	EAP                                                         	Paris                                                       	90	942939	4583	DTS-PO	58131	46	\N
+202	WHA                                                         	Tel Aviv                                                    	48	486705	3947	DTS-PO	680016	5	\N
+203	EAP                                                         	London                                                      	99	321762	612	ISP	351796	2	\N
+204	AF                                                          	London                                                      	33	187003	92	DTS-PO	831560	43	\N
+205	AF                                                          	Petoria                                                     	31	101547	1066	DTS-PO	470212	85	\N
+206	NEA                                                         	Tel Aviv                                                    	95	656860	2533	ISP	288380	95	\N
+207	SCA                                                         	Paris                                                       	16	190307	199	ISP	98575	28	\N
+208	EAP                                                         	Petoria                                                     	79	196127	859	DTS-PO	126012	25	\N
+209	AF                                                          	Mexico City                                                 	97	415958	401	DTS-PO	363437	13	\N
+210	NEA                                                         	Rome                                                        	65	921564	3450	DTS-PO	936080	66	\N
+211	AF                                                          	Prague                                                      	55	224240	3568	DTS-PO	522866	7	\N
+212	NEA                                                         	Paris                                                       	56	721302	701	ISP	642866	84	\N
+213	EAP                                                         	Prague                                                      	13	867535	3035	ISP	674028	3	\N
+214	AF                                                          	Paris                                                       	20	457958	3945	ISP	429420	84	\N
+215	NEA                                                         	Petoria                                                     	78	806258	2786	DTS-PO	855804	29	\N
+216	SCA                                                         	Paris                                                       	80	356284	882	DTS-PO	967752	10	\N
+217	WHA                                                         	Abu Dabi                                                    	62	536952	3037	ISP	64031	36	\N
+218	WHA                                                         	Petoria                                                     	21	123925	409	DTS-PO	188021	16	\N
+219	NEA                                                         	Prague                                                      	28	286309	1962	ISP	639033	36	\N
+220	WHA                                                         	Tel Aviv                                                    	54	442926	1131	DTS-PO	317153	75	\N
+221	NEA                                                         	Paris                                                       	87	426656	3552	ISP	629626	100	\N
+222	AF                                                          	Abu Dabi                                                    	18	105956	1356	ISP	414836	39	\N
+223	WHA                                                         	Prague                                                      	94	771642	4826	ISP	485450	6	\N
+224	AF                                                          	Rome                                                        	100	804074	2160	ISP	671386	28	\N
+225	NEA                                                         	Prague                                                      	29	989307	4964	DTS-PO	54271	55	\N
+226	WHA                                                         	Paris                                                       	42	872566	3703	DTS-PO	733612	59	\N
+227	NEA                                                         	Abu Dabi                                                    	42	107376	19	DTS-PO	43217	86	\N
+228	NEA                                                         	Abu Dabi                                                    	97	719429	3238	ISP	754475	60	\N
+229	NEA                                                         	Paris                                                       	91	365364	4301	ISP	690669	97	\N
+230	SCA                                                         	London                                                      	45	76045	3652	DTS-PO	588406	2	\N
+231	EAP                                                         	London                                                      	82	205585	4814	DTS-PO	333852	27	\N
+232	AF                                                          	Rome                                                        	32	735200	2933	DTS-PO	325051	35	\N
+233	WHA                                                         	Tel Aviv                                                    	27	943611	2532	DTS-PO	414676	76	\N
+234	WHA                                                         	Paris                                                       	87	861899	4325	ISP	502774	67	\N
+235	AF                                                          	Tel Aviv                                                    	90	635818	0	ISP	547315	33	\N
+236	WHA                                                         	Abu Dabi                                                    	91	148183	4729	DTS-PO	449056	43	\N
+237	WHA                                                         	Tel Aviv                                                    	96	278635	3226	DTS-PO	196641	28	\N
+238	SCA                                                         	Mexico City                                                 	22	624933	4798	DTS-PO	409141	32	\N
+239	SCA                                                         	Mexico City                                                 	17	271256	720	ISP	539892	80	\N
+240	NEA                                                         	Petoria                                                     	64	851810	2777	DTS-PO	762426	97	\N
+241	EAP                                                         	Tel Aviv                                                    	100	944804	2495	ISP	978468	4	\N
+242	SCA                                                         	Rome                                                        	65	84854	4713	ISP	638968	69	\N
+243	WHA                                                         	Paris                                                       	18	120420	1715	ISP	65224	85	\N
+244	NEA                                                         	Mexico City                                                 	16	219568	-4	ISP	883173	48	\N
+245	WHA                                                         	Petoria                                                     	12	893826	753	ISP	980927	21	\N
+246	NEA                                                         	Paris                                                       	43	244797	1056	ISP	454366	22	\N
+247	WHA                                                         	Tel Aviv                                                    	13	225614	171	DTS-PO	77917	74	\N
+248	AF                                                          	Prague                                                      	99	741655	2734	ISP	642842	88	\N
+249	NEA                                                         	Paris                                                       	11	172392	2801	ISP	209973	78	\N
+250	EAP                                                         	London                                                      	13	246520	3852	ISP	687371	49	\N
+251	EAP                                                         	Mexico City                                                 	73	38390	482	ISP	580592	30	\N
+252	EAP                                                         	Abu Dabi                                                    	23	314929	905	ISP	870471	32	\N
+253	AF                                                          	Abu Dabi                                                    	47	812973	1006	DTS-PO	141292	88	\N
+254	NEA                                                         	Tel Aviv                                                    	50	587803	1714	DTS-PO	663256	63	\N
+255	EAP                                                         	Tel Aviv                                                    	15	103317	3527	DTS-PO	472001	9	\N
+256	SCA                                                         	Petoria                                                     	42	866644	3990	ISP	529899	43	\N
+257	AF                                                          	Paris                                                       	55	754462	3880	ISP	58515	25	\N
+258	WHA                                                         	London                                                      	92	819363	1985	DTS-PO	920103	55	\N
+259	WHA                                                         	Mexico City                                                 	52	55768	2246	ISP	125590	96	\N
+260	SCA                                                         	Paris                                                       	82	409665	3622	ISP	478556	64	\N
+261	EAP                                                         	Paris                                                       	71	792853	3431	DTS-PO	40636	69	\N
+262	AF                                                          	London                                                      	41	395781	576	ISP	273069	2	\N
+263	NEA                                                         	Tel Aviv                                                    	56	772671	4696	DTS-PO	732696	34	\N
+264	EAP                                                         	Mexico City                                                 	25	697032	430	ISP	697380	44	\N
+265	WHA                                                         	Petoria                                                     	95	354059	1237	DTS-PO	693336	61	\N
+266	AF                                                          	London                                                      	88	189488	954	ISP	876869	63	\N
+267	EAP                                                         	Rome                                                        	57	356965	1577	DTS-PO	667654	25	\N
+268	EAP                                                         	Petoria                                                     	82	556874	1757	DTS-PO	235983	62	\N
+269	WHA                                                         	Prague                                                      	100	225719	1126	ISP	883373	48	\N
+270	WHA                                                         	Paris                                                       	93	231429	1317	DTS-PO	621433	71	\N
+271	SCA                                                         	Prague                                                      	11	394774	423	ISP	386953	31	\N
+272	SCA                                                         	Paris                                                       	76	359159	1704	ISP	451851	27	\N
+273	WHA                                                         	Mexico City                                                 	10	475196	4680	ISP	224756	13	\N
+274	SCA                                                         	Mexico City                                                 	69	701545	4894	DTS-PO	338077	11	\N
+275	WHA                                                         	Prague                                                      	39	992720	162	DTS-PO	349653	2	\N
+276	EAP                                                         	Rome                                                        	33	473406	1220	ISP	896762	58	\N
+277	EAP                                                         	Rome                                                        	70	866391	2662	DTS-PO	337114	59	\N
+278	AF                                                          	Paris                                                       	61	663158	2025	DTS-PO	655217	85	\N
+279	EAP                                                         	Rome                                                        	36	585774	433	ISP	123845	75	\N
+280	EAP                                                         	Tel Aviv                                                    	78	849855	1727	ISP	513012	76	\N
+281	EAP                                                         	Rome                                                        	29	419217	3222	DTS-PO	234472	74	\N
+282	AF                                                          	Tel Aviv                                                    	65	775547	3267	ISP	530910	81	\N
+283	WHA                                                         	Prague                                                      	39	430203	4346	DTS-PO	735070	90	\N
+284	WHA                                                         	Rome                                                        	32	913178	2983	ISP	666567	53	\N
+285	NEA                                                         	London                                                      	63	756301	4364	DTS-PO	304528	63	\N
+286	AF                                                          	London                                                      	28	522454	4386	ISP	711018	18	\N
+287	EAP                                                         	Rome                                                        	43	186100	764	ISP	768587	91	\N
+288	AF                                                          	Paris                                                       	54	152752	865	ISP	356934	70	\N
+289	AF                                                          	Abu Dabi                                                    	39	646397	2507	ISP	24720	69	\N
+290	WHA                                                         	Prague                                                      	16	545068	2987	ISP	718041	10	\N
+291	WHA                                                         	Paris                                                       	32	716741	4130	ISP	47129	47	\N
+292	AF                                                          	Paris                                                       	52	782008	24	DTS-PO	120340	100	\N
+293	SCA                                                         	Tel Aviv                                                    	73	316856	2087	ISP	144950	84	\N
+294	AF                                                          	Abu Dabi                                                    	45	372028	4162	ISP	296484	7	\N
+295	WHA                                                         	Abu Dabi                                                    	36	224772	1506	ISP	920200	62	\N
+296	AF                                                          	Rome                                                        	26	948724	1640	DTS-PO	399328	8	\N
+297	NEA                                                         	Paris                                                       	60	313989	1570	DTS-PO	773311	69	\N
+298	SCA                                                         	Petoria                                                     	17	274127	3889	ISP	600250	35	\N
+299	AF                                                          	Mexico City                                                 	22	542489	3133	DTS-PO	851380	56	\N
+300	WHA                                                         	Rome                                                        	17	673537	3899	ISP	937570	77	\N
+301	AF                                                          	Prague                                                      	63	525808	290	ISP	772205	89	\N
+302	EAP                                                         	Paris                                                       	77	398012	4729	ISP	42722	13	\N
+303	EAP                                                         	Rome                                                        	70	979373	4580	ISP	566226	60	\N
+304	SCA                                                         	Mexico City                                                 	74	370102	4217	DTS-PO	243196	69	\N
+305	EAP                                                         	Petoria                                                     	33	980882	366	ISP	897746	51	\N
+306	SCA                                                         	Prague                                                      	53	125384	1835	ISP	859771	48	\N
+307	AF                                                          	Abu Dabi                                                    	79	413288	2487	ISP	394169	58	\N
+308	SCA                                                         	London                                                      	80	302991	3137	ISP	762015	4	\N
+309	NEA                                                         	Mexico City                                                 	38	117988	2757	DTS-PO	916555	86	\N
+310	NEA                                                         	Paris                                                       	55	642423	2611	ISP	897071	81	\N
+311	EAP                                                         	Prague                                                      	28	616055	2554	ISP	762522	35	\N
+312	WHA                                                         	Abu Dabi                                                    	31	458213	3834	ISP	81223	91	\N
+313	AF                                                          	Tel Aviv                                                    	88	638977	3760	ISP	88242	52	\N
+314	NEA                                                         	Tel Aviv                                                    	85	430714	4955	ISP	501938	90	\N
+315	NEA                                                         	Rome                                                        	14	519065	1191	DTS-PO	623108	77	\N
+316	WHA                                                         	Paris                                                       	69	696151	1234	ISP	126865	24	\N
+317	SCA                                                         	Mexico City                                                 	67	12406	3233	ISP	380620	70	\N
+318	AF                                                          	Tel Aviv                                                    	10	292365	4954	ISP	775496	11	\N
+319	AF                                                          	Paris                                                       	77	191491	404	ISP	202374	46	\N
+320	EAP                                                         	Paris                                                       	52	516259	1515	DTS-PO	882397	60	\N
+321	NEA                                                         	Tel Aviv                                                    	42	113614	-2	DTS-PO	552582	7	\N
+322	SCA                                                         	Mexico City                                                 	68	678984	2468	ISP	980433	11	\N
+323	AF                                                          	Mexico City                                                 	75	492928	2545	DTS-PO	499688	65	\N
+324	EAP                                                         	Prague                                                      	73	318673	892	ISP	987657	68	\N
+325	AF                                                          	Tel Aviv                                                    	93	358688	2830	ISP	183114	6	\N
+326	SCA                                                         	Paris                                                       	88	201847	837	DTS-PO	355654	90	\N
+327	NEA                                                         	Mexico City                                                 	36	280412	4081	ISP	50666	46	\N
+328	AF                                                          	Petoria                                                     	10	983954	1881	DTS-PO	282630	1	\N
+329	WHA                                                         	Rome                                                        	23	441391	4351	DTS-PO	849830	82	\N
+330	EAP                                                         	Rome                                                        	98	482160	3873	ISP	484278	14	\N
+331	SCA                                                         	Tel Aviv                                                    	46	761474	3140	ISP	718699	47	\N
+332	EAP                                                         	Tel Aviv                                                    	92	552163	3316	DTS-PO	444385	13	\N
+333	SCA                                                         	Mexico City                                                 	62	101095	3741	DTS-PO	512702	41	\N
+334	NEA                                                         	Tel Aviv                                                    	15	872039	4862	DTS-PO	850121	64	\N
+335	SCA                                                         	Paris                                                       	62	410118	3853	DTS-PO	864404	47	\N
+336	WHA                                                         	London                                                      	28	35569	24	DTS-PO	659319	3	\N
+337	WHA                                                         	London                                                      	87	801893	163	DTS-PO	582643	84	\N
+338	WHA                                                         	Petoria                                                     	90	916351	4763	DTS-PO	612450	88	\N
+339	NEA                                                         	Tel Aviv                                                    	59	887594	4045	ISP	406731	80	\N
+340	WHA                                                         	Mexico City                                                 	44	223087	4533	ISP	176218	75	\N
+341	AF                                                          	Abu Dabi                                                    	29	802071	1687	DTS-PO	156685	13	\N
+342	EAP                                                         	Paris                                                       	75	702862	2721	ISP	195076	82	\N
+343	EAP                                                         	Paris                                                       	100	857417	981	DTS-PO	974481	37	\N
+344	WHA                                                         	Paris                                                       	92	339274	4059	DTS-PO	934616	69	\N
+345	NEA                                                         	Paris                                                       	62	478190	1531	ISP	564712	88	\N
+346	AF                                                          	Petoria                                                     	62	587058	4036	ISP	189340	29	\N
+347	WHA                                                         	Prague                                                      	40	315614	34	DTS-PO	738801	38	\N
+348	EAP                                                         	London                                                      	98	824920	2953	ISP	345734	27	\N
+349	AF                                                          	London                                                      	12	638701	4465	DTS-PO	176974	57	\N
+350	WHA                                                         	Abu Dabi                                                    	18	449463	1957	ISP	480973	37	\N
+351	EAP                                                         	London                                                      	84	418299	1641	DTS-PO	183122	48	\N
+352	NEA                                                         	Abu Dabi                                                    	30	276923	1309	DTS-PO	188476	50	\N
+353	SCA                                                         	Tel Aviv                                                    	31	820165	919	ISP	238463	52	\N
+354	WHA                                                         	Tel Aviv                                                    	78	256511	3963	DTS-PO	291087	42	\N
+355	WHA                                                         	Abu Dabi                                                    	32	14922	4467	ISP	66967	13	\N
+356	AF                                                          	Rome                                                        	79	690468	301	ISP	971556	48	\N
+357	EAP                                                         	Prague                                                      	49	824779	699	ISP	259641	20	\N
+358	NEA                                                         	London                                                      	22	831885	866	ISP	361752	7	\N
+359	AF                                                          	Prague                                                      	86	84729	2032	ISP	658223	55	\N
+360	AF                                                          	Rome                                                        	60	120582	891	DTS-PO	151438	45	\N
+361	SCA                                                         	Abu Dabi                                                    	33	495252	2254	ISP	153474	100	\N
+362	EAP                                                         	Abu Dabi                                                    	42	571576	2102	ISP	508773	96	\N
+363	EAP                                                         	Abu Dabi                                                    	82	448967	615	DTS-PO	731522	74	\N
+364	NEA                                                         	Petoria                                                     	95	409611	315	DTS-PO	635786	39	\N
+365	EAP                                                         	Abu Dabi                                                    	78	841690	1079	DTS-PO	348749	49	\N
+366	EAP                                                         	London                                                      	29	68463	1087	ISP	993815	63	\N
+367	AF                                                          	Petoria                                                     	64	119265	210	ISP	950956	27	\N
+368	NEA                                                         	Petoria                                                     	51	524249	4763	DTS-PO	733736	60	\N
+369	AF                                                          	Petoria                                                     	21	725827	4434	DTS-PO	296518	41	\N
+370	SCA                                                         	Prague                                                      	85	339843	3199	ISP	253877	7	\N
+371	EAP                                                         	London                                                      	96	671147	4615	ISP	376621	80	\N
+372	NEA                                                         	Prague                                                      	28	73848	3920	DTS-PO	439494	16	\N
+373	EAP                                                         	London                                                      	28	24044	1839	DTS-PO	619321	91	\N
+374	WHA                                                         	Rome                                                        	60	325501	26	DTS-PO	81078	43	\N
+375	AF                                                          	Petoria                                                     	33	596702	2145	ISP	236779	73	\N
+376	SCA                                                         	London                                                      	10	840804	1919	ISP	484951	91	\N
+377	EAP                                                         	Tel Aviv                                                    	69	824226	3950	DTS-PO	704141	81	\N
+378	EAP                                                         	Tel Aviv                                                    	90	287388	2502	DTS-PO	347178	35	\N
+379	SCA                                                         	Rome                                                        	23	442969	4297	ISP	924302	57	\N
+380	WHA                                                         	Tel Aviv                                                    	26	601277	2262	DTS-PO	760834	35	\N
+381	EAP                                                         	Paris                                                       	82	78638	2769	ISP	147219	71	\N
+382	AF                                                          	Abu Dabi                                                    	91	229801	4150	DTS-PO	476797	95	\N
+383	EAP                                                         	London                                                      	46	607511	26	ISP	945788	20	\N
+384	NEA                                                         	Tel Aviv                                                    	33	522214	169	ISP	85672	68	\N
+385	NEA                                                         	Paris                                                       	99	361497	4560	ISP	310193	100	\N
+386	AF                                                          	Rome                                                        	20	85291	1938	ISP	597505	43	\N
+387	SCA                                                         	Tel Aviv                                                    	20	275231	1629	ISP	795870	4	\N
+388	WHA                                                         	London                                                      	16	812611	3818	DTS-PO	883924	71	\N
+389	SCA                                                         	Petoria                                                     	65	540875	966	DTS-PO	316717	67	\N
+390	NEA                                                         	Mexico City                                                 	88	98168	4043	ISP	31083	70	\N
+391	AF                                                          	Petoria                                                     	99	756061	3748	DTS-PO	423710	74	\N
+392	EAP                                                         	Rome                                                        	91	479902	4791	ISP	818908	91	\N
+393	WHA                                                         	Paris                                                       	41	287630	2848	ISP	267721	33	\N
+394	NEA                                                         	Petoria                                                     	80	298119	2658	DTS-PO	495810	78	\N
+395	WHA                                                         	Petoria                                                     	88	834784	83	DTS-PO	420353	82	\N
+396	NEA                                                         	Tel Aviv                                                    	67	592429	2555	ISP	179358	92	\N
+397	WHA                                                         	Abu Dabi                                                    	63	293338	504	ISP	128122	13	\N
+398	WHA                                                         	London                                                      	79	429694	2823	ISP	392127	39	\N
+399	NEA                                                         	Mexico City                                                 	72	222343	4031	DTS-PO	792672	31	\N
+400	AF                                                          	Mexico City                                                 	35	500664	425	ISP	920359	66	\N
+401	SCA                                                         	Abu Dabi                                                    	40	754976	811	ISP	967319	98	\N
+402	AF                                                          	Prague                                                      	40	242623	1144	DTS-PO	324031	66	\N
+403	AF                                                          	Abu Dabi                                                    	87	43209	942	DTS-PO	169107	45	\N
+404	SCA                                                         	Paris                                                       	80	969380	183	DTS-PO	280917	19	\N
+405	NEA                                                         	Rome                                                        	13	892216	2544	DTS-PO	703044	78	\N
+406	SCA                                                         	Tel Aviv                                                    	74	885260	1333	ISP	166176	46	\N
+407	NEA                                                         	Prague                                                      	48	918719	360	ISP	433484	97	\N
+408	NEA                                                         	Rome                                                        	34	620405	3960	DTS-PO	69852	99	\N
+409	AF                                                          	Prague                                                      	85	539756	1898	ISP	502613	63	\N
+410	NEA                                                         	Prague                                                      	70	583919	3799	ISP	560896	27	\N
+411	WHA                                                         	Rome                                                        	50	253251	4429	DTS-PO	389798	45	\N
+412	SCA                                                         	Tel Aviv                                                    	24	911912	3422	ISP	431202	24	\N
+413	WHA                                                         	Petoria                                                     	75	136337	1015	ISP	23348	82	\N
+414	AF                                                          	London                                                      	16	838055	4914	DTS-PO	414021	100	\N
+415	AF                                                          	Prague                                                      	85	34921	3813	DTS-PO	927561	98	\N
+416	EAP                                                         	Rome                                                        	78	720648	538	ISP	134669	11	\N
+417	WHA                                                         	Paris                                                       	50	33334	1291	ISP	857540	29	\N
+418	WHA                                                         	Mexico City                                                 	30	780433	4775	DTS-PO	713830	69	\N
+419	WHA                                                         	Abu Dabi                                                    	68	616796	885	ISP	640131	44	\N
+420	AF                                                          	Paris                                                       	18	803955	2618	ISP	38923	31	\N
+421	EAP                                                         	Rome                                                        	10	872839	1364	ISP	524369	89	\N
+422	AF                                                          	London                                                      	52	48801	1618	DTS-PO	429553	51	\N
+423	AF                                                          	Petoria                                                     	86	952818	539	ISP	841088	42	\N
+424	SCA                                                         	Tel Aviv                                                    	35	136937	4187	DTS-PO	380549	75	\N
+425	SCA                                                         	Paris                                                       	13	756320	3901	ISP	603134	74	\N
+426	EAP                                                         	Rome                                                        	38	337850	1707	ISP	664956	63	\N
+427	EAP                                                         	Prague                                                      	25	778323	1418	DTS-PO	332413	71	\N
+428	SCA                                                         	Prague                                                      	28	901403	3686	ISP	223217	7	\N
+429	NEA                                                         	Tel Aviv                                                    	19	999005	1909	DTS-PO	336717	76	\N
+430	NEA                                                         	Petoria                                                     	83	678000	1051	ISP	891218	29	\N
+431	NEA                                                         	London                                                      	19	512188	1195	DTS-PO	350378	88	\N
+432	EAP                                                         	Rome                                                        	76	800211	1031	ISP	399120	99	\N
+433	NEA                                                         	Prague                                                      	22	675245	731	ISP	187433	39	\N
+434	EAP                                                         	Mexico City                                                 	96	153052	2221	DTS-PO	913554	34	\N
+435	AF                                                          	Mexico City                                                 	38	632025	3643	ISP	766905	41	\N
+436	NEA                                                         	Abu Dabi                                                    	53	719614	494	ISP	675565	25	\N
+437	SCA                                                         	Petoria                                                     	15	964433	959	ISP	596457	93	\N
+438	SCA                                                         	Rome                                                        	62	879764	3948	DTS-PO	404784	98	\N
+439	WHA                                                         	Rome                                                        	84	453138	4785	DTS-PO	287730	6	\N
+440	EAP                                                         	Tel Aviv                                                    	50	367767	140	ISP	762552	1	\N
+441	NEA                                                         	Mexico City                                                 	14	774890	3027	DTS-PO	428000	36	\N
+442	NEA                                                         	Paris                                                       	20	326360	1136	DTS-PO	801877	14	\N
+443	EAP                                                         	Tel Aviv                                                    	50	367923	4924	DTS-PO	156012	66	\N
+444	EAP                                                         	Mexico City                                                 	92	640411	1166	ISP	684335	35	\N
+445	WHA                                                         	Paris                                                       	56	959729	2737	DTS-PO	809119	91	\N
+446	NEA                                                         	Mexico City                                                 	26	532886	3964	DTS-PO	969334	65	\N
+447	EAP                                                         	Prague                                                      	67	468152	2135	ISP	517362	94	\N
+448	NEA                                                         	Tel Aviv                                                    	49	224578	2490	ISP	399224	3	\N
+449	NEA                                                         	Rome                                                        	100	564100	4069	ISP	988012	16	\N
+450	WHA                                                         	Mexico City                                                 	93	935392	2722	ISP	439321	3	\N
+451	SCA                                                         	Petoria                                                     	98	454932	1765	ISP	442943	51	\N
+452	WHA                                                         	Mexico City                                                 	18	265931	2866	ISP	695252	60	\N
+453	NEA                                                         	Abu Dabi                                                    	48	827649	1978	ISP	718481	94	\N
+454	NEA                                                         	Prague                                                      	97	758864	3089	DTS-PO	942955	92	\N
+455	EAP                                                         	Prague                                                      	11	55527	4870	ISP	96974	40	\N
+456	AF                                                          	Paris                                                       	74	964159	3682	DTS-PO	702521	27	\N
+457	SCA                                                         	Petoria                                                     	57	858931	197	DTS-PO	444154	21	\N
+458	NEA                                                         	Rome                                                        	16	527509	3739	ISP	304936	34	\N
+459	NEA                                                         	Petoria                                                     	64	921659	3877	DTS-PO	983670	98	\N
+460	NEA                                                         	Rome                                                        	90	276649	4085	ISP	605194	37	\N
+461	EAP                                                         	Abu Dabi                                                    	31	460991	4393	ISP	284944	49	\N
+462	EAP                                                         	London                                                      	12	407499	175	ISP	996398	20	\N
+463	WHA                                                         	Rome                                                        	15	893198	3129	ISP	60708	76	\N
+464	AF                                                          	London                                                      	91	839721	745	ISP	876468	16	\N
+465	NEA                                                         	Petoria                                                     	45	469158	1568	ISP	362356	95	\N
+466	AF                                                          	Petoria                                                     	47	773231	115	ISP	771440	32	\N
+467	NEA                                                         	Rome                                                        	11	763527	504	DTS-PO	806186	65	\N
+468	EAP                                                         	Tel Aviv                                                    	29	349769	3641	DTS-PO	221336	76	\N
+469	AF                                                          	Abu Dabi                                                    	19	650176	866	DTS-PO	146030	4	\N
+470	SCA                                                         	Tel Aviv                                                    	57	917928	4719	DTS-PO	165661	27	\N
+471	SCA                                                         	Mexico City                                                 	43	833505	3690	DTS-PO	492946	68	\N
+472	NEA                                                         	Tel Aviv                                                    	100	964565	2816	DTS-PO	82437	20	\N
+473	EAP                                                         	Rome                                                        	88	236556	4614	DTS-PO	625424	9	\N
+474	SCA                                                         	Rome                                                        	93	479226	1082	DTS-PO	418332	90	\N
+475	WHA                                                         	Tel Aviv                                                    	82	424512	4436	DTS-PO	250468	2	\N
+476	WHA                                                         	Rome                                                        	83	25813	229	DTS-PO	608920	95	\N
+477	NEA                                                         	Paris                                                       	71	560676	4653	ISP	449136	82	\N
+478	AF                                                          	Prague                                                      	88	758344	3922	ISP	569625	81	\N
+479	EAP                                                         	Rome                                                        	51	389352	269	ISP	487014	50	\N
+480	EAP                                                         	Abu Dabi                                                    	24	328905	3657	DTS-PO	233274	14	\N
+481	AF                                                          	Mexico City                                                 	55	26950	2172	ISP	521584	89	\N
+482	SCA                                                         	London                                                      	16	478009	2544	ISP	504221	68	\N
+483	NEA                                                         	Prague                                                      	49	689688	4656	DTS-PO	758665	80	\N
+484	AF                                                          	Abu Dabi                                                    	91	130166	565	DTS-PO	628228	23	\N
+485	EAP                                                         	Petoria                                                     	29	378089	1801	ISP	783826	12	\N
+486	AF                                                          	Paris                                                       	20	881400	152	ISP	995005	1	\N
+487	SCA                                                         	Abu Dabi                                                    	32	836909	1474	ISP	525309	73	\N
+488	SCA                                                         	Rome                                                        	32	419366	1924	ISP	300766	42	\N
+489	WHA                                                         	Petoria                                                     	65	186181	3600	DTS-PO	810237	31	\N
+490	NEA                                                         	Mexico City                                                 	98	16962	1959	ISP	307729	82	\N
+491	SCA                                                         	Rome                                                        	98	585067	4347	ISP	308316	73	\N
+492	NEA                                                         	London                                                      	98	132299	3947	DTS-PO	798739	67	\N
+493	NEA                                                         	Paris                                                       	10	898553	3067	ISP	237233	12	\N
+494	EAP                                                         	Mexico City                                                 	47	298352	129	DTS-PO	758014	79	\N
+495	AF                                                          	Mexico City                                                 	34	571551	469	ISP	572563	100	\N
+496	SCA                                                         	London                                                      	94	132789	2240	DTS-PO	858988	93	\N
+497	WHA                                                         	Prague                                                      	49	425928	2954	DTS-PO	859920	39	\N
+498	NEA                                                         	Abu Dabi                                                    	78	845485	360	DTS-PO	527861	32	\N
+499	SCA                                                         	Prague                                                      	99	488750	4902	ISP	922255	41	\N
+500	WHA                                                         	London                                                      	60	641500	343	ISP	697230	83	\N
+501	EAP                                                         	Tel Aviv                                                    	71	76168	4020	ISP	834383	44	\N
+502	WHA                                                         	Petoria                                                     	42	617479	3813	DTS-PO	591541	57	\N
+503	EAP                                                         	London                                                      	60	373565	4568	DTS-PO	980683	61	\N
+504	SCA                                                         	Rome                                                        	99	368058	636	DTS-PO	493220	58	\N
+505	NEA                                                         	Tel Aviv                                                    	39	416256	4782	ISP	396938	57	\N
+506	NEA                                                         	Tel Aviv                                                    	41	670424	1565	DTS-PO	279369	76	\N
+507	WHA                                                         	Tel Aviv                                                    	100	889398	76	ISP	286336	59	\N
+508	SCA                                                         	London                                                      	39	739924	2218	DTS-PO	120710	97	\N
+509	SCA                                                         	Abu Dabi                                                    	21	510023	4032	ISP	418205	49	\N
+510	WHA                                                         	Mexico City                                                 	17	238663	1262	ISP	557377	100	\N
+511	NEA                                                         	London                                                      	77	184517	4286	DTS-PO	408241	85	\N
+512	WHA                                                         	Prague                                                      	35	678320	3627	ISP	428645	80	\N
+513	SCA                                                         	Abu Dabi                                                    	12	419983	564	DTS-PO	972355	43	\N
+514	EAP                                                         	Petoria                                                     	65	732956	3064	DTS-PO	346101	1	\N
+515	NEA                                                         	Tel Aviv                                                    	66	111897	1720	ISP	696398	32	\N
+516	WHA                                                         	Mexico City                                                 	20	77930	3188	DTS-PO	529570	25	\N
+517	EAP                                                         	Paris                                                       	24	744621	2792	ISP	347779	25	\N
+518	AF                                                          	London                                                      	31	170765	3725	DTS-PO	956161	53	\N
+519	AF                                                          	Abu Dabi                                                    	76	703650	3394	DTS-PO	427273	37	\N
+\.
+
+
+--
+-- TOC entry 2297 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: bandwidth_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('bandwidth_id_seq', 519, true);
+
+
+--
+-- TOC entry 2282 (class 0 OID 42849)
+-- Dependencies: 174
+-- Data for Name: brodeploylocal; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY brodeploylocal (id, bureau, regularworkstation, regworkdeployed, regworkremaining, regworkpercentcompleted, vsencompatableworkstation, vsendeployed, vsenremaining, vsenpercentcompleted) FROM stdin;
+3	IRM                                                         	108	13	699	85	580	26	464	14
+4	AF                                                          	954	30	742	99	842	60	754	83
+5	A                                                           	812	90	559	14	711	16	234	69
+6	A                                                           	834	58	680	1	946	80	893	37
+7	DS                                                          	710	68	960	41	519	17	275	35
+8	EUR                                                         	693	53	742	77	368	32	473	30
+9	AF                                                          	922	17	994	73	526	70	431	43
+10	A                                                           	851	56	342	19	190	64	286	76
+11	A                                                           	929	58	444	17	949	71	422	14
+12	CA                                                          	435	40	284	11	825	89	523	24
+13	DS                                                          	642	92	651	14	358	81	166	97
+14	J                                                           	702	17	338	5	471	52	229	22
+15	CT                                                          	560	46	133	34	183	68	312	71
+16	AF                                                          	385	71	751	40	948	79	830	42
+17	IRM                                                         	780	57	531	5	494	71	603	84
+18	CA                                                          	672	20	684	13	967	22	773	2
+19	DS                                                          	471	72	579	94	253	62	434	85
+20	J                                                           	227	92	241	78	119	83	909	99
+21	EUR                                                         	460	16	767	26	494	32	925	22
+22	CT                                                          	967	66	522	18	255	55	382	8
+23	IRM                                                         	185	52	991	8	466	67	173	81
+24	EUR                                                         	229	16	979	36	753	63	196	32
+25	AF                                                          	463	79	304	6	871	39	570	85
+26	CT                                                          	375	82	398	38	795	72	188	36
+27	AF                                                          	231	87	586	92	172	64	791	41
+28	A                                                           	652	83	146	10	360	81	354	60
+29	CT                                                          	742	19	531	44	401	25	216	48
+30	EUR                                                         	306	15	651	100	519	76	650	28
+31	CT                                                          	243	64	210	52	915	27	305	1
+32	AF                                                          	794	85	449	84	494	45	369	18
+33	CA                                                          	579	72	357	70	359	47	285	20
+34	CA                                                          	587	19	893	36	336	69	263	66
+35	EUR                                                         	806	81	127	36	774	76	536	29
+36	CA                                                          	260	91	798	62	189	13	736	65
+37	CA                                                          	259	15	752	80	181	56	628	13
+38	CT                                                          	205	63	981	30	791	89	164	39
+39	IRM                                                         	178	66	328	68	653	69	922	80
+40	CA                                                          	257	94	105	52	800	42	215	5
+41	EUR                                                         	789	54	915	84	879	90	953	96
+42	J                                                           	873	58	915	58	257	54	438	32
+43	J                                                           	169	71	376	13	231	12	237	92
+44	IRM                                                         	774	43	945	70	391	49	908	95
+45	DS                                                          	983	66	102	31	819	17	983	11
+46	IRM                                                         	216	42	133	64	473	81	108	36
+47	AF                                                          	793	82	517	44	778	25	471	38
+48	CT                                                          	509	84	465	82	875	13	305	65
+49	A                                                           	623	21	447	38	557	70	745	65
+50	EUR                                                         	884	34	345	29	679	50	999	82
+51	EUR                                                         	231	57	548	96	440	59	267	3
+52	EUR                                                         	982	22	696	65	870	37	177	38
+53	CA                                                          	358	21	313	11	835	94	274	97
+54	CA                                                          	196	87	843	88	106	83	112	67
+55	CA                                                          	449	55	899	8	761	25	277	98
+56	IRM                                                         	913	52	978	36	245	91	262	40
+57	A                                                           	129	29	890	5	121	91	739	48
+58	EUR                                                         	102	16	560	89	230	32	157	35
+59	J                                                           	829	40	524	98	303	69	427	23
+60	EUR                                                         	752	65	997	44	174	78	208	10
+61	DS                                                          	162	14	132	19	875	43	694	84
+62	DS                                                          	446	93	238	47	710	34	609	44
+63	EUR                                                         	827	12	818	49	187	87	572	29
+64	CT                                                          	763	37	325	52	305	98	910	16
+65	Miscellaniouse-NonConsolodated                              	328	28	783	87	123	65	564	87
+66	IO-NonConsolodated                                          	311	21	713	81	121	61	514	81
+67	R_CSCCC                                                     	211	22	213	82	221	62	524	88
+\.
+
+
+--
+-- TOC entry 2298 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: brodeploylocal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('brodeploylocal_id_seq', 67, true);
+
+
+--
+-- TOC entry 2280 (class 0 OID 42833)
+-- Dependencies: 172
+-- Data for Name: brodeployoverseas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY brodeployoverseas (id, region, post, regularworkstation, regworkdeployed, regworkremaining, regworkpercentcompleted, vsencompatableworkstation, vsendeployed, vsenremaining, vsenpercentcompleted, latitude, longitude) FROM stdin;
+18	NEA                                                         	Prague                                                      	640	87	768	1	609	15	150	39	10.19	45.86
+19	NEA                                                         	Paris                                                       	506	80	581	49	443	75	397	68	14.33	21.34
+20	AF                                                          	Tel Aviv                                                    	481	48	727	87	938	17	375	54	1.91	9.87
+21	SCA                                                         	Paris                                                       	446	71	856	55	674	64	209	23	20.7	16.88
+22	EAP                                                         	Mexico City                                                 	773	12	265	71	816	98	622	3	25.16	12.1
+23	EAP                                                         	Abu Dabi                                                    	744	14	576	40	898	17	127	49	5.73	14.65
+24	WHA                                                         	Prague                                                      	770	30	985	72	821	11	636	1	2.55	45.54
+25	NEA                                                         	Paris                                                       	782	91	939	84	937	47	131	19	17.83	30.57
+26	NEA                                                         	Tel Aviv                                                    	123	95	130	83	957	67	851	4	12.1	48.09
+27	WHA                                                         	Prague                                                      	904	95	858	43	597	87	743	32	12.42	29.94
+28	WHA                                                         	Abu Dabi                                                    	464	28	281	83	136	52	778	92	14.33	33.44
+29	AF                                                          	Rome                                                        	167	91	483	82	500	68	632	82	23.25	57.32
+30	EAP                                                         	London                                                      	840	15	525	58	985	97	240	72	9.24	28.34
+31	WHA                                                         	Abu Dabi                                                    	636	78	269	50	261	10	945	82	17.2	43.31
+32	AF                                                          	Paris                                                       	990	85	158	15	586	44	674	21	26.75	23.57
+33	NEA                                                         	London                                                      	803	77	790	97	312	96	976	18	21.97	32.8
+34	SCA                                                         	Paris                                                       	616	60	208	57	440	26	734	92	16.24	19.75
+35	EAP                                                         	Rome                                                        	579	59	655	48	563	81	319	9	20.7	36.31
+36	AF                                                          	Prague                                                      	345	57	480	40	112	25	267	66	27.07	43.63
+37	EAP                                                         	Rome                                                        	907	24	845	14	629	53	959	57	7.32	19.11
+38	NEA                                                         	Rome                                                        	796	46	953	54	490	48	849	9	10.83	37.26
+39	AF                                                          	Tel Aviv                                                    	968	79	396	38	957	15	286	54	23.25	12.42
+40	NEA                                                         	Petoria                                                     	326	56	877	94	907	59	292	77	5.1	3.18
+41	NEA                                                         	Rome                                                        	173	95	656	29	186	52	935	68	4.14	37.58
+42	WHA                                                         	Abu Dabi                                                    	879	14	812	5	198	71	262	93	25.48	39.81
+43	NEA                                                         	Rome                                                        	167	51	207	22	196	77	706	1	25.16	57.32
+44	AF                                                          	Paris                                                       	427	17	944	26	799	67	470	20	18.15	37.58
+45	NEA                                                         	Prague                                                      	573	78	861	20	782	75	274	61	17.83	3.18
+46	AF                                                          	London                                                      	517	93	832	10	398	10	743	99	15.61	54.78
+47	EAP                                                         	Rome                                                        	988	38	273	18	929	83	309	44	3.5	10.83
+48	SCA                                                         	Abu Dabi                                                    	561	13	135	23	119	63	259	20	3.18	25.16
+49	EAP                                                         	Prague                                                      	885	47	451	80	297	66	302	34	23.25	10.83
+50	EAP                                                         	London                                                      	645	84	163	12	874	20	410	89	20.06	29.94
+51	EAP                                                         	Abu Dabi                                                    	590	26	668	77	457	55	254	79	8.6	22.61
+52	WHA                                                         	Tel Aviv                                                    	483	57	491	77	466	21	361	48	26.75	14.65
+53	WHA                                                         	Petoria                                                     	549	57	326	21	428	56	559	3	23.89	53.82
+54	AF                                                          	Petoria                                                     	129	56	877	45	221	86	314	17	9.87	43.63
+55	SCA                                                         	Paris                                                       	238	78	992	71	116	73	702	42	20.06	6.37
+56	SCA                                                         	Prague                                                      	228	10	343	99	318	49	395	1	24.52	50
+57	EAP                                                         	Petoria                                                     	690	97	374	77	722	32	881	23	24.84	8.6
+58	NEA                                                         	Prague                                                      	738	64	131	57	527	24	404	41	12.74	50
+59	AF                                                          	Mexico City                                                 	530	74	356	35	874	16	409	15	24.84	35.35
+60	SCA                                                         	London                                                      	938	90	553	10	300	92	577	9	6.37	54.78
+61	NEA                                                         	London                                                      	888	45	892	94	877	63	300	21	13.06	16.88
+62	SCA                                                         	Paris                                                       	147	54	150	99	436	60	167	60	13.38	34.71
+63	WHA                                                         	Abu Dabi                                                    	298	53	101	9	161	30	360	53	14.97	48.09
+64	EAP                                                         	Paris                                                       	234	76	543	21	740	88	788	79	13.38	13.06
+65	NEA                                                         	Petoria                                                     	462	14	181	63	407	65	231	18	21.02	47.13
+66	EAP                                                         	Mexico City                                                 	333	59	867	5	101	17	492	15	28.66	22.29
+67	AF                                                          	Mexico City                                                 	925	19	690	7	351	45	895	47	7.96	24.84
+68	EAP                                                         	Rome                                                        	252	85	351	56	383	11	539	21	21.02	25.48
+69	WHA                                                         	Rome                                                        	820	81	516	16	525	22	429	21	23.57	37.58
+70	AF                                                          	Rome                                                        	415	15	764	50	579	64	121	89	26.75	47.45
+71	WHA                                                         	Prague                                                      	748	100	940	66	969	90	162	14	16.24	53.5
+72	SCA                                                         	Prague                                                      	818	34	977	63	944	42	641	8	25.48	54.46
+73	NEA                                                         	Paris                                                       	309	90	813	20	788	88	398	33	22.93	7.01
+74	EAP                                                         	London                                                      	978	54	862	37	581	68	668	51	7.64	32.8
+75	AF                                                          	London                                                      	989	79	285	23	680	100	477	41	24.84	42.99
+76	AF                                                          	Tel Aviv                                                    	854	36	530	41	243	41	143	92	4.78	6.69
+77	SCA                                                         	London                                                      	608	38	584	98	255	36	733	83	4.78	27.07
+78	NEA                                                         	Paris                                                       	288	55	396	5	812	83	506	95	4.46	28.66
+79	AF                                                          	Rome                                                        	735	52	317	87	944	81	880	66	26.11	4.46
+80	EAP                                                         	Paris                                                       	949	13	615	90	272	16	779	51	19.75	29.62
+81	AF                                                          	Rome                                                        	724	37	323	35	290	39	549	45	12.74	25.48
+82	NEA                                                         	Abu Dabi                                                    	179	26	794	61	917	45	999	43	7.01	46.82
+83	SCA                                                         	Paris                                                       	741	24	414	96	559	61	354	1	0.32	41.72
+84	AF                                                          	Tel Aviv                                                    	989	53	716	24	358	46	778	62	25.16	45.86
+85	NEA                                                         	Petoria                                                     	102	28	135	79	438	89	696	73	13.69	8.28
+86	AF                                                          	Paris                                                       	498	57	942	24	863	98	443	14	14.97	5.1
+87	NEA                                                         	Paris                                                       	160	10	137	86	438	92	565	11	11.15	37.9
+88	EAP                                                         	Prague                                                      	836	98	722	76	286	59	749	59	19.43	13.38
+89	SCA                                                         	Tel Aviv                                                    	862	40	761	95	744	45	127	56	19.11	44.9
+90	EAP                                                         	Abu Dabi                                                    	572	41	332	7	164	86	764	31	14.97	7.01
+91	AF                                                          	Tel Aviv                                                    	974	37	353	53	971	15	645	81	19.11	37.9
+92	NEA                                                         	Abu Dabi                                                    	783	21	450	28	317	100	337	75	27.39	41.4
+93	NEA                                                         	London                                                      	928	14	347	89	421	60	473	33	17.83	1.27
+94	EAP                                                         	Rome                                                        	415	97	791	63	280	78	902	95	20.38	35.35
+95	AF                                                          	Rome                                                        	863	73	429	53	231	69	203	99	1.27	26.75
+96	SCA                                                         	Mexico City                                                 	345	64	718	12	309	29	110	15	18.15	15.29
+97	AF                                                          	Paris                                                       	841	71	748	94	695	78	464	61	16.24	28.66
+98	NEA                                                         	Mexico City                                                 	561	56	378	73	573	51	411	79	1.91	45.86
+99	SCA                                                         	Rome                                                        	366	33	190	86	783	86	986	24	19.43	21.97
+100	NEA                                                         	Prague                                                      	322	28	227	5	848	91	225	99	20.7	3.5
+101	WHA                                                         	Tel Aviv                                                    	456	25	941	78	542	20	704	12	0.64	5.41
+102	EAP                                                         	Prague                                                      	311	50	203	96	554	95	288	43	7.64	43.95
+103	SCA                                                         	Rome                                                        	104	11	386	2	195	56	353	41	24.52	33.76
+104	NEA                                                         	London                                                      	681	13	584	59	320	97	866	1	16.24	31.21
+105	EAP                                                         	London                                                      	547	78	822	39	185	10	453	12	9.55	23.89
+106	AF                                                          	Petoria                                                     	141	83	307	6	431	80	309	47	7.96	56.37
+107	SCA                                                         	Paris                                                       	268	63	514	41	481	23	119	11	12.74	9.87
+108	AF                                                          	Rome                                                        	105	32	653	99	555	34	158	78	9.24	14.65
+109	AF                                                          	Tel Aviv                                                    	829	49	748	16	243	22	757	94	26.43	4.46
+110	NEA                                                         	Rome                                                        	317	82	150	90	624	99	613	48	10.19	23.89
+111	SCA                                                         	Tel Aviv                                                    	790	32	266	71	462	89	667	7	24.2	35.67
+112	NEA                                                         	Tel Aviv                                                    	393	42	561	75	637	99	970	28	5.1	20.06
+113	EAP                                                         	Rome                                                        	563	28	291	35	846	75	516	69	0.64	36.31
+114	AF                                                          	Tel Aviv                                                    	515	85	318	97	352	20	734	93	20.06	48.73
+115	SCA                                                         	Petoria                                                     	737	70	676	98	974	23	852	26	18.15	55.73
+116	SCA                                                         	Tel Aviv                                                    	309	18	939	30	887	70	165	13	2.55	50.32
+117	AF                                                          	Rome                                                        	651	85	617	30	611	92	707	23	26.75	52.23
+118	SCA                                                         	Tel Aviv                                                    	378	61	755	98	248	35	654	92	19.43	29.3
+119	NEA                                                         	London                                                      	208	65	471	69	560	17	921	45	28.66	13.06
+120	NEA                                                         	Rome                                                        	119	40	109	19	659	66	187	30	4.14	22.29
+121	AF                                                          	Mexico City                                                 	892	78	399	19	946	77	122	41	13.69	27.39
+122	EAP                                                         	Rome                                                        	804	34	347	17	630	58	706	52	6.05	50
+123	AF                                                          	Paris                                                       	680	14	138	5	569	57	160	3	0.64	24.52
+124	AF                                                          	Tel Aviv                                                    	796	72	274	73	675	25	599	35	13.69	33.12
+125	WHA                                                         	London                                                      	222	19	162	16	575	65	871	93	8.28	19.75
+126	NEA                                                         	Petoria                                                     	128	72	917	38	240	53	426	69	2.87	22.93
+127	NEA                                                         	Mexico City                                                 	462	31	966	69	624	60	921	58	12.1	35.67
+128	NEA                                                         	London                                                      	469	46	141	10	376	48	323	79	22.61	53.5
+129	NEA                                                         	Paris                                                       	719	51	548	72	869	77	713	54	9.24	14.01
+130	WHA                                                         	Abu Dabi                                                    	282	19	218	30	469	60	590	20	9.87	27.39
+131	EAP                                                         	Paris                                                       	273	28	624	70	934	49	486	61	28.03	42.99
+132	AF                                                          	Petoria                                                     	335	53	930	60	959	10	205	9	5.73	18.79
+133	SCA                                                         	London                                                      	381	88	166	7	735	55	736	22	28.34	8.28
+134	AF                                                          	Tel Aviv                                                    	238	45	322	24	620	62	912	47	23.89	0.32
+135	SCA                                                         	Petoria                                                     	207	52	781	40	270	29	931	39	17.52	3.18
+136	SCA                                                         	Prague                                                      	725	72	821	38	784	67	786	33	5.1	20.7
+137	WHA                                                         	Paris                                                       	457	57	419	32	920	97	436	46	27.07	38.85
+138	AF                                                          	Rome                                                        	718	23	763	58	111	20	621	35	7.32	56.05
+139	SCA                                                         	Rome                                                        	115	90	438	56	214	98	901	75	9.55	49.68
+140	EAP                                                         	London                                                      	111	87	630	3	974	25	433	23	4.14	13.69
+141	SCA                                                         	Paris                                                       	318	92	501	71	928	40	172	48	13.38	3.18
+142	NEA                                                         	Prague                                                      	259	99	335	15	240	67	434	30	25.16	11.78
+143	AF                                                          	Petoria                                                     	965	33	353	35	530	64	770	72	22.61	42.04
+144	AF                                                          	Tel Aviv                                                    	786	53	639	5	377	11	701	22	26.11	42.99
+145	EAP                                                         	Paris                                                       	568	68	668	27	421	47	998	34	9.87	50.96
+146	SCA                                                         	Prague                                                      	782	33	859	81	605	88	526	78	22.29	12.74
+147	SCA                                                         	Tel Aviv                                                    	760	34	668	62	286	34	722	63	12.1	39.49
+148	AF                                                          	Tel Aviv                                                    	948	95	163	19	469	69	160	15	16.88	20.7
+149	WHA                                                         	London                                                      	335	27	713	68	887	16	404	32	21.02	48.41
+150	SCA                                                         	Rome                                                        	341	15	539	42	678	86	363	50	23.89	45.22
+151	NEA                                                         	Tel Aviv                                                    	252	13	955	74	973	23	125	90	14.33	14.97
+152	WHA                                                         	Prague                                                      	750	18	862	52	682	95	539	88	20.38	19.43
+153	EAP                                                         	Prague                                                      	272	93	346	9	472	58	847	32	6.37	48.73
+154	SCA                                                         	Prague                                                      	559	65	263	100	545	91	403	69	20.7	48.73
+155	SCA                                                         	London                                                      	463	43	260	82	908	10	217	12	24.52	23.25
+156	NEA                                                         	Abu Dabi                                                    	320	22	678	87	384	68	419	21	28.03	2.23
+157	WHA                                                         	Paris                                                       	825	34	294	63	253	30	776	29	2.55	8.92
+158	NEA                                                         	Petoria                                                     	662	90	394	61	934	32	479	87	18.79	19.11
+159	WHA                                                         	London                                                      	800	41	844	7	481	99	854	64	11.78	29.3
+160	NEA                                                         	Petoria                                                     	491	10	645	31	689	95	287	11	15.61	19.11
+161	EAP                                                         	Abu Dabi                                                    	444	18	992	22	759	46	755	71	14.01	2.23
+162	NEA                                                         	Tel Aviv                                                    	305	13	415	89	978	60	991	52	25.48	10.19
+163	SCA                                                         	Rome                                                        	189	15	287	77	248	71	112	78	25.8	25.8
+164	NEA                                                         	Abu Dabi                                                    	512	76	998	98	662	25	836	19	10.19	2.55
+165	WHA                                                         	London                                                      	689	41	246	87	196	39	584	13	3.18	25.16
+166	WHA                                                         	London                                                      	612	56	861	57	536	52	762	31	19.11	5.41
+167	AF                                                          	Abu Dabi                                                    	895	41	276	22	894	38	386	32	25.48	14.65
+168	WHA                                                         	Abu Dabi                                                    	933	71	773	23	398	86	613	84	13.06	22.93
+169	NEA                                                         	Abu Dabi                                                    	301	88	340	11	266	63	480	7	24.2	17.2
+170	EAP                                                         	Rome                                                        	554	64	465	35	250	31	815	57	23.89	55.73
+171	SCA                                                         	Rome                                                        	657	74	543	63	912	31	159	31	28.66	25.16
+172	SCA                                                         	Mexico City                                                 	673	79	863	61	284	41	664	88	20.38	52.55
+173	AF                                                          	Petoria                                                     	1000	16	157	4	872	92	307	89	15.61	57.01
+174	NEA                                                         	Paris                                                       	797	16	804	70	740	13	532	55	26.43	56.05
+175	WHA                                                         	Paris                                                       	101	99	236	7	109	10	976	25	25.48	29.62
+176	WHA                                                         	Prague                                                      	289	56	648	76	486	63	667	85	27.71	4.14
+177	NEA                                                         	London                                                      	825	26	224	82	274	20	151	9	18.15	16.88
+178	WHA                                                         	Rome                                                        	269	82	145	82	680	10	899	47	1.59	55.1
+179	NEA                                                         	London                                                      	182	48	286	15	556	85	495	21	3.82	9.24
+180	WHA                                                         	Mexico City                                                 	999	66	305	82	337	31	733	74	8.28	38.22
+181	EAP                                                         	Abu Dabi                                                    	945	97	323	45	820	72	686	93	24.52	14.33
+182	NEA                                                         	Abu Dabi                                                    	566	70	131	14	905	87	461	14	15.92	7.96
+183	NEA                                                         	Rome                                                        	381	77	260	97	700	12	287	45	7.32	51.91
+184	AF                                                          	Rome                                                        	137	95	314	98	929	53	856	87	28.03	8.92
+185	NEA                                                         	London                                                      	343	25	392	72	482	30	683	72	18.79	14.33
+186	EAP                                                         	Mexico City                                                 	431	95	342	42	895	56	443	81	28.34	12.74
+187	WHA                                                         	London                                                      	540	59	352	82	329	74	138	91	12.1	40.13
+188	EAP                                                         	Prague                                                      	333	64	417	67	535	88	146	29	24.52	15.92
+189	WHA                                                         	Paris                                                       	786	27	953	2	908	100	927	32	19.75	4.14
+190	WHA                                                         	Abu Dabi                                                    	126	90	562	89	947	82	762	22	21.66	31.21
+191	AF                                                          	Petoria                                                     	766	66	291	70	149	90	927	9	26.43	46.5
+192	WHA                                                         	Abu Dabi                                                    	173	84	212	54	832	88	259	76	17.83	41.4
+193	WHA                                                         	London                                                      	281	56	752	26	463	68	407	33	13.06	54.14
+194	EAP                                                         	Mexico City                                                 	540	78	985	62	356	82	528	47	15.92	5.41
+195	EAP                                                         	Rome                                                        	212	29	508	77	600	80	297	50	26.11	24.2
+196	WHA                                                         	Rome                                                        	919	55	326	15	889	10	711	28	28.03	42.04
+197	NEA                                                         	Tel Aviv                                                    	876	83	155	44	449	44	784	96	9.24	21.34
+198	WHA                                                         	Mexico City                                                 	729	13	441	67	795	80	862	96	27.39	33.44
+199	AF                                                          	Petoria                                                     	814	37	799	2	574	52	438	63	4.78	24.2
+200	EAP                                                         	Prague                                                      	762	33	152	8	164	85	293	95	1.27	42.99
+201	NEA                                                         	Mexico City                                                 	170	21	129	61	630	47	310	76	23.89	14.01
+202	NEA                                                         	London                                                      	334	24	788	52	298	86	632	6	1.59	30.89
+203	EAP                                                         	Abu Dabi                                                    	120	57	506	5	638	62	167	21	4.78	27.71
+204	SCA                                                         	Rome                                                        	350	74	376	87	788	42	466	86	4.46	8.6
+205	NEA                                                         	Tel Aviv                                                    	522	23	801	91	160	18	624	57	12.1	16.56
+206	AF                                                          	London                                                      	527	44	481	89	317	62	127	21	21.97	40.13
+207	AF                                                          	Abu Dabi                                                    	406	84	226	93	449	60	289	72	13.38	55.73
+208	NEA                                                         	London                                                      	813	52	513	68	739	13	734	92	22.93	23.25
+209	WHA                                                         	London                                                      	824	90	184	15	739	31	159	10	22.93	15.92
+210	SCA                                                         	Petoria                                                     	800	37	489	58	732	97	408	8	2.87	22.29
+211	WHA                                                         	Abu Dabi                                                    	812	55	424	61	785	65	758	11	25.48	37.58
+212	SCA                                                         	Tel Aviv                                                    	841	38	386	92	734	27	915	19	6.05	34.39
+213	WHA                                                         	Abu Dabi                                                    	333	75	339	15	437	25	796	63	17.52	10.19
+214	EAP                                                         	Rome                                                        	257	94	200	36	220	74	330	43	3.18	37.9
+215	EAP                                                         	London                                                      	842	40	833	9	538	27	338	26	23.25	50
+216	SCA                                                         	Mexico City                                                 	207	85	311	5	944	63	258	65	24.52	34.71
+217	AF                                                          	London                                                      	689	48	560	85	717	80	687	56	6.05	35.99
+218	SCA                                                         	Abu Dabi                                                    	397	18	261	27	716	42	924	54	27.71	38.22
+219	EAP                                                         	Prague                                                      	814	26	100	48	956	69	128	16	8.28	52.87
+220	AF                                                          	Mexico City                                                 	630	98	943	13	935	64	245	58	3.18	30.89
+221	SCA                                                         	Petoria                                                     	779	54	541	18	369	93	937	21	15.61	54.46
+222	AF                                                          	Paris                                                       	101	63	650	25	862	95	694	11	21.34	1.91
+223	EAP                                                         	Prague                                                      	732	56	408	63	496	59	243	39	9.87	38.22
+224	SCA                                                         	Abu Dabi                                                    	411	95	403	20	892	100	368	63	0.96	18.47
+225	AF                                                          	Paris                                                       	974	87	539	52	112	89	872	68	4.46	6.69
+226	AF                                                          	Prague                                                      	775	90	304	7	178	83	636	63	12.74	47.45
+227	WHA                                                         	Abu Dabi                                                    	807	43	272	90	229	19	406	2	10.51	41.72
+228	WHA                                                         	Rome                                                        	627	91	145	26	372	76	475	24	12.42	26.11
+229	EAP                                                         	Tel Aviv                                                    	958	20	979	17	935	97	626	49	24.2	13.06
+230	EAP                                                         	Petoria                                                     	211	15	196	55	562	21	412	16	1.27	16.56
+231	SCA                                                         	London                                                      	336	47	955	23	995	49	157	23	16.24	49.68
+232	SCA                                                         	Rome                                                        	972	51	626	32	655	66	643	53	26.11	48.41
+233	NEA                                                         	Rome                                                        	546	39	434	40	610	87	723	46	6.05	6.37
+234	SCA                                                         	Petoria                                                     	858	59	945	10	138	40	409	99	22.93	46.82
+235	NEA                                                         	Mexico City                                                 	610	21	311	68	573	91	781	38	4.46	8.6
+236	NEA                                                         	Rome                                                        	487	14	484	42	859	31	898	96	12.42	43.63
+237	SCA                                                         	Abu Dabi                                                    	356	63	784	67	762	92	560	75	1.91	20.38
+238	NEA                                                         	Abu Dabi                                                    	253	37	600	59	228	82	521	10	6.37	13.38
+239	WHA                                                         	Petoria                                                     	953	49	356	31	969	40	137	22	13.38	12.42
+240	NEA                                                         	Tel Aviv                                                    	540	53	735	5	970	16	642	74	0.96	52.87
+241	EAP                                                         	Abu Dabi                                                    	241	49	480	13	787	52	402	23	19.43	48.73
+242	WHA                                                         	Abu Dabi                                                    	298	77	805	27	733	87	879	45	25.48	45.22
+243	AF                                                          	Mexico City                                                 	661	29	417	30	161	63	793	58	18.47	28.98
+244	AF                                                          	Tel Aviv                                                    	671	39	855	57	158	64	941	23	14.01	3.82
+245	WHA                                                         	Paris                                                       	924	41	677	42	256	42	222	74	24.52	7.01
+246	EAP                                                         	Tel Aviv                                                    	348	25	203	88	192	40	425	17	5.41	3.82
+247	AF                                                          	Rome                                                        	490	93	192	64	898	84	165	49	25.16	20.06
+248	SCA                                                         	Petoria                                                     	540	18	181	68	388	78	121	91	15.92	7.01
+249	SCA                                                         	Abu Dabi                                                    	140	86	926	40	552	92	659	27	6.69	12.1
+250	EAP                                                         	Petoria                                                     	196	49	140	1	985	24	411	46	11.15	18.47
+251	AF                                                          	Petoria                                                     	298	50	371	81	820	18	533	83	5.73	52.23
+252	NEA                                                         	Paris                                                       	597	41	469	88	242	86	310	82	5.41	57.01
+253	WHA                                                         	Abu Dabi                                                    	215	47	373	94	287	45	472	3	16.88	18.79
+254	SCA                                                         	Prague                                                      	750	25	506	54	416	50	558	79	23.57	51.91
+255	AF                                                          	Prague                                                      	478	27	539	32	984	74	313	33	7.96	32.8
+256	AF                                                          	London                                                      	496	13	885	26	946	61	125	85	10.83	12.1
+257	EAP                                                         	Prague                                                      	855	80	403	83	535	62	233	76	4.14	39.81
+258	WHA                                                         	Paris                                                       	376	86	446	25	465	47	180	79	18.15	8.28
+259	NEA                                                         	Rome                                                        	516	24	638	22	371	36	963	19	28.34	13.38
+260	EAP                                                         	London                                                      	583	10	546	79	467	92	886	20	15.29	0.96
+\.
+
+
+--
+-- TOC entry 2299 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: brodeployoverseas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('brodeployoverseas_id_seq', 260, true);
+
+
+--
+-- TOC entry 2168 (class 2606 OID 42848)
+-- Name: bandwidth_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY bandwidth
+    ADD CONSTRAINT bandwidth_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2170 (class 2606 OID 42856)
+-- Name: brodeploylocal_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY brodeploylocal
+    ADD CONSTRAINT brodeploylocal_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2166 (class 2606 OID 42840)
+-- Name: brodeployoverseas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY brodeployoverseas
+    ADD CONSTRAINT brodeployoverseas_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2292 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2016-03-01 11:26:14 EST
+
+--
+-- PostgreSQL database dump complete
+--
+
